@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISI ILMU GALAXY</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;font-family:Nunito,sans-serif;color:white;
+ background:radial-gradient(ellipse at 15% 15%,#382080,transparent 36%),
+ radial-gradient(ellipse at 85% 85%,#073d72,transparent 38%),
+ linear-gradient(135deg,#09051f,#11104a 52%,#071b3d);
+ display:grid;place-items:center;padding:15px
+}
+.app{
+ width:min(920px,100%);background:linear-gradient(145deg,#171144,#081c43);
+ border:1px solid #6e5dcb88;border-radius:28px;overflow:hidden;
+ box-shadow:0 25px 90px #0009
+}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 25px;border-bottom:1px solid #ffffff25}
+.brand{font-weight:900;letter-spacing:1px;font-size:1.15rem}
+.logo{background:linear-gradient(135deg,#ff3fa4,#814cff,#21d9ee);padding:10px;border-radius:13px;margin-right:8px}
+.tools{display:flex;gap:8px}
+button{font-family:inherit;cursor:pointer}
+.iconbtn{background:#ffffff15;color:white;border:1px solid #ffffff35;border-radius:12px;padding:9px 12px;font-weight:800}
+main{padding:clamp(20px,5vw,45px)}
+.screen{display:none;animation:rise .4s ease}
+.screen.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:15px 5px 25px}
+.illustration{
+ width:155px;height:155px;margin:auto auto 22px;border-radius:40px;
+ display:grid;place-items:center;font-size:85px;
+ background:radial-gradient(circle at 30% 25%,#fff4a6,#ff9fcb 38%,#8b5cf6 72%,#312080);
+ box-shadow:0 0 35px #ff4fae77;animation:float 3s infinite ease-in-out
+}
+@keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}
+.eyebrow{display:inline-block;padding:8px 15px;border-radius:30px;background:linear-gradient(90deg,#ff3fa4,#7b4dff);font-size:.8rem;font-weight:900;letter-spacing:1px}
+h1{font-size:clamp(2rem,5vw,3.3rem);line-height:1.1;font-weight:900;margin:17px 0}
+h1 span{background:linear-gradient(90deg,#ffe45e,#ff8acb,#54edff);color:transparent;background-clip:text}
+.lead{color:#c9c8f3;line-height:1.7;max-width:560px;margin:0 auto 25px}
+.primary{border:0;border-radius:16px;padding:15px 25px;background:linear-gradient(100deg,#ff3fa4,#914dff,#21c9ed);color:white;font-weight:900;font-size:1rem;box-shadow:0 8px 25px #a43cff55;transition:.2s}
+.primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px #a43cff88}
+.minirow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:23px}
+.pill{background:#ffffff12;border:1px solid #ffffff25;color:#f3edff;padding:9px 13px;border-radius:30px;font-size:.85rem;font-weight:800}
+.quizhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px}
+.counter{color:#6df5ff;font-weight:900}
+.scorechip{background:linear-gradient(90deg,#ffbd39,#ffe86b);color:#4c2b00;padding:9px 14px;border-radius:30px;font-weight:900}
+.progress{height:12px;background:#ffffff20;border-radius:20px;overflow:hidden;margin-bottom:28px}
+.progressbar{height:100%;width:0;background:linear-gradient(90deg,#21e6ed,#8b5cf6,#ff3fa4);transition:width .4s}
+.question-card{background:linear-gradient(135deg,#33206e,#143d71);border:1px solid #8b7aff77;border-radius:23px;padding:28px;margin-bottom:20px}
+.qicon{font-size:42px;margin-bottom:10px}
+.question{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:900;line-height:1.4;margin:0}
+.hint{color:#c9d7ff;font-size:.9rem;margin-top:12px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.answer{background:#ffffff10;border:2px solid #ffffff26;color:white;border-radius:16px;padding:16px;text-align:left;font-size:1rem;font-weight:800;display:flex;align-items:center;gap:12px;min-height:65px;transition:.2s}
+.answer:hover:not(:disabled){border-color:#50efff;background:#ffffff20;transform:translateY(-2px)}
+.letter{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:linear-gradient(135deg,#ff3fa4,#8158ff);display:grid;place-items:center}
+.answer.correct{border-color:#35f0b0;background:#0b775866}
+.answer.wrong{border-color:#ff668a;background:#9f214c66}
+.feedback{display:none;margin-top:17px;padding:15px;border-radius:15px;font-weight:800;line-height:1.5}
+.feedback.show{display:block}
+.feedback.good{background:#0d755b;color:#dffff5}
+.feedback.bad{background:#862c50;color:#ffe8ef}
+.nextrow{display:flex;justify-content:flex-end;margin-top:18px}
+.nextbtn{display:none}.nextbtn.show{display:inline-block}
+.result{text-align:center;padding:15px 5px 25px}
+.trophy{font-size:85px;filter:drop-shadow(0 0 22px #ffe45e99)}
+.finalscore{font-size:5rem;font-weight:900;color:#ffe45e;margin:15px 0}
+.resultmsg{color:#c9c8f3;line-height:1.7}
+.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:25px 0}
+.stat{background:#ffffff12;border:1px solid #ffffff25;border-radius:16px;padding:15px 22px;min-width:110px}
+.stat strong{display:block;font-size:1.5rem;color:#60efff}
+.stat small{color:#d1cef5;font-weight:800}
+.footer{text-align:center;color:#9ea4dd;font-size:.8rem;padding:0 10px 18px}
+@media(max-width:620px){
+ .answers{grid-template-columns:1fr}
+ header{padding:14px}
+ .brand{font-size:.9rem}
+ .iconbtn{font-size:.75rem;padding:8px}
+ main{padding:20px 16px}
+ .question-card{padding:22px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><span class="logo">🚀</span>MISI ILMU <small style="color:#ffe45e">GALAXY</small></div>
+ <div class="tools">
+  <button class="iconbtn" id="soundBtn">🔊 Sound ON</button>
+  <button class="iconbtn" id="musicBtn">♫ Muzik OFF</button>
+ </div>
+</header>
+
+<main>
+<section class="screen active" id="intro">
+ <div class="hero">
+  <div class="illustration">🪐</div>
+  <div class="eyebrow">🚀 GALAXY QUIZ · 10 LEVEL</div>
+  <h1>TEROKAI <span>GALAKSI ILMU!</span></h1>
+  <p class="lead">Bersedia untuk misi paling mencabar? Jawab 10 soalan, kumpul tenaga bintang dan buktikan anda juara ilmu galaksi!</p>
+  <button class="primary" id="startBtn">🚀 MULAKAN MISI</button>
+  <div class="minirow">
+   <span class="pill">🌟 10 CABARAN</span>
+   <span class="pill">⚡ 10 XP SETIAP JAWAPAN</span>
+   <span class="pill">🏆 GANJARAN JUARA</span>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="game">
+ <div class="quizhead">
+  <div class="counter" id="counter">SOALAN 1 / 10</div>
+  <div class="scorechip">⭐ <span id="score">0</span> mata</div>
+ </div>
+ <div class="progress"><div class="progressbar" id="progress"></div></div>
+ <div class="question-card">
+  <div class="qicon" id="qicon">🌍</div>
+  <p class="question" id="question"></p>
+  <div class="hint">Pilih satu jawapan yang paling tepat.</div>
+ </div>
+ <div class="answers" id="answers"></div>
+ <div class="feedback" id="feedback" role="status"></div>
+ <div class="nextrow"><button class="primary nextbtn" id="nextBtn">SOALAN SETERUSNYA →</button></div>
+</section>
+
+<section class="screen" id="result">
+ <div class="result">
+  <div class="trophy" id="trophy">🏆</div>
+  <div class="eyebrow">MISI SELESAI!</div>
+  <h1>HEBAT! INI <span>KEPUTUSAN ANDA</span></h1>
+  <div class="finalscore"><span id="finalScore">0</span><small style="font-size:1.3rem;color:#aaa"> / 100</small></div>
+  <p class="resultmsg" id="resultMsg"></p>
+  <div class="stats">
+   <div class="stat"><strong id="correctCount">0</strong><small>Jawapan betul</small></div>
+   <div class="stat"><strong id="wrongCount">0</strong><small>Jawapan salah</small></div>
+   <div class="stat"><strong>10</strong><small>Jumlah soalan</small></div>
+  </div>
+  <button class="primary" id="restartBtn">↻ MAIN LAGI</button>
+ </div>
+</section>
+</main>
+<div class="footer">MISI ILMU GALAXY · LEVEL UP YOUR KNOWLEDGE ✨</div>
+</div>
+
+<script>
+const questions=[
+{icon:"🌍",q:"Apakah planet terbesar dalam sistem suria?",a:["Bumi","Marikh","Musytari","Zuhal"],correct:2,why:"Musytari ialah planet terbesar dalam sistem suria."},
+{icon:"🧪",q:"Apakah formula kimia bagi air?",a:["CO₂","H₂O","O₂","NaCl"],correct:1,why:"Air terdiri daripada dua atom hidrogen dan satu atom oksigen: H₂O."},
+{icon:"🇲🇾",q:"Apakah ibu negara Malaysia?",a:["Johor Bahru","Kuala Lumpur","Kuching","Ipoh"],correct:1,why:"Kuala Lumpur ialah ibu negara Malaysia."},
+{icon:"🌱",q:"Proses tumbuhan menghasilkan makanan menggunakan cahaya matahari dikenali sebagai…",a:["Penyahtinjaan","Fotosintesis","Penyerbukan","Penyejatan"],correct:1,why:"Fotosintesis menggunakan cahaya matahari, air dan karbon dioksida untuk menghasilkan makanan."},
+{icon:"📐",q:"Berapakah hasil 12 × 8?",a:["86","92","96","108"],correct:2,why:"12 × 8 = 96."},
+{icon:"🫀",q:"Organ manakah mengepam darah ke seluruh badan?",a:["Paru-paru","Hati","Buah pinggang","Jantung"],correct:3,why:"Jantung mengepam darah melalui sistem peredaran darah."},
+{icon:"🪐",q:"Planet yang dikenali sebagai Planet Merah ialah…",a:["Zuhrah","Marikh","Uranus","Neptun"],correct:1,why:"Permukaan Marikh kelihatan kemerahan kerana mineral besi teroksida."},
+{icon:"📚",q:"Berapakah jumlah sisi bagi sebuah heksagon?",a:["5","6","7","8"],correct:1,why:"Heksagon mempunyai enam sisi."},
+{icon:"💧",q:"Pada suhu berapakah air tulen membeku pada tekanan atmosfera biasa?",a:["0°C","10°C","50°C","100°C"],correct:0,why:"Air tulen membeku pada 0°C pada tekanan atmosfera biasa."},
+{icon:"🌏",q:"Benua terbesar di dunia ialah…",a:["Afrika","Eropah","Asia","Amerika Selatan"],correct:2,why:"Asia ialah benua terbesar dari segi keluasan dan jumlah penduduk."}
+];
+
+let current=0,score=0,answered=false;
+let soundOn=true,musicOn=false,audioCtx=null,musicTimer=null,musicStep=0;
+const $=id=>document.getElementById(id);
+
+function audio(){
+ if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+ if(audioCtx.state==="suspended")audioCtx.resume();
+ return audioCtx;
+}
+function tone(freq,duration=.15,type="sine",volume=.07,delay=0){
+ if(!soundOn)return;
+ const c=audio(),o=c.createOscillator(),g=c.createGain();
+ o.type=type;
+ o.frequency.setValueAtTime(freq,c.currentTime+delay);
+ g.gain.setValueAtTime(volume,c.currentTime+delay);
+ g.gain.exponentialRampToValueAtTime(.001,c.currentTime+delay+duration);
+ o.connect(g);g.connect(c.destination);
+ o.start(c.currentTime+delay);o.stop(c.currentTime+delay+duration);
+}
+function sfx(type){
+ if(type==="click")tone(650,.08,"sine",.08);
+ if(type==="good"){
+  tone(660,.15,"sine",.1);
+  tone(880,.2,"sine",.1,.13);
+  tone(1046,.25,"sine",.1,.27);
+ }
+ if(type==="bad"){
+  tone(230,.2,"triangle",.1);
+  tone(165,.25,"triangle",.1,.18);
+ }
+ if(type==="win"){
+  [523,659,784,1046].forEach((f,i)=>tone(f,.3,"sine",.1,i*.14));
+ }
+}
+function startMusic(){
+ if(musicOn)return;
+ audio();
+ musicOn=true;
+ $("musicBtn").textContent="♫ Muzik ON";
+ const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23];
+ musicTimer=setInterval(()=>{
+  if(musicOn&&soundOn){
+   tone(notes[musicStep%notes.length],.42,"sine",.025);
+   musicStep++;
+  }
+ },480);
+}
+function stopMusic(){
+ clearInterval(musicTimer);
+ musicTimer=null;musicOn=false;
+ $("musicBtn").textContent="♫ Muzik OFF";
+}
+function show(id){
+ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+ $(id).classList.add("active");
+}
+function loadQuestion(){
+ answered=false;
+ const item=questions[current];
+ $("counter").textContent=`SOALAN ${current+1} / 10`;
+ $("score").textContent=score;
+ $("progress").style.width=`${current/10*100}%`;
+ $("qicon").textContent=item.icon;
+ $("question").textContent=item.q;
+ $("feedback").className="feedback";
+ $("feedback").textContent="";
+ $("nextBtn").classList.remove("show");
+ $("nextBtn").textContent=current===9?"LIHAT KEPUTUSAN 🏆":"SOALAN SETERUSNYA →";
+ $("answers").innerHTML="";
+ item.a.forEach((answer,i)=>{
+  const b=document.createElement("button");
+  b.className="answer";
+  b.innerHTML=`<span class="letter">${"ABCD"[i]}</span><span>${answer}</span>`;
+  b.addEventListener("click",()=>choose(i,b));
+  $("answers").appendChild(b);
+ });
+}
+function choose(index,button){
+ if(answered)return;
+ answered=true;
+ const item=questions[current];
+ const buttons=[...document.querySelectorAll(".answer")];
+ buttons.forEach((b,i)=>{
+  b.disabled=true;
+  if(i===item.correct)b.classList.add("correct");
+ });
+ if(index===item.correct){
+  score+=10;
+  $("score").textContent=score;
+  $("feedback").textContent="✨ Tepat sekali! "+item.why;
+  $("feedback").className="feedback show good";
+  sfx("good");
+ }else{
+  button.classList.add("wrong");
+  $("feedback").textContent="Belum tepat. "+item.why;
+  $("feedback").className="feedback show bad";
+  sfx("bad");
+ }
+ $("nextBtn").classList.add("show");
+}
+function finish(){
+ show("result");
+ $("progress").style.width="100%";
+ $("finalScore").textContent=score;
+ const right=score/10;
+ $("correctCount").textContent=right;
+ $("wrongCount").textContent=10-right;
+ let msg,trophy;
+ if(score===100){msg="Sempurna! Anda menjawab semua soalan dengan betul. Memang hebat!";trophy="👑"}
+ else if(score>=70){msg="Tahniah! Pengetahuan anda sangat baik. Teruskan usaha!";trophy="🏆"}
+ else if(score>=40){msg="Bagus! Cuba lagi untuk meningkatkan markah anda.";trophy="🥈"}
+ else{msg="Jangan putus asa! Terus belajar dan cuba sekali lagi.";trophy="🌟"}
+ $("resultMsg").textContent=msg;
+ $("trophy").textContent=trophy;
+ sfx("win");
+}
+$("startBtn").addEventListener("click",()=>{
+ audio();sfx("click");
+ if(soundOn&&!musicOn)startMusic();
+ current=0;score=0;show("game");loadQuestion();
+});
+$("nextBtn").addEventListener("click",()=>{
+ sfx("click");
+ if(current<9){current++;loadQuestion();}
+ else finish();
+});
+$("restartBtn").addEventListener("click",()=>{
+ sfx("click");current=0;score=0;show("game");loadQuestion();
+});
+$("soundBtn").addEventListener("click",()=>{
+ soundOn=!soundOn;
+ $("soundBtn").textContent=soundOn?"🔊 Sound ON":"🔇 Sound OFF";
+ if(!soundOn)stopMusic();
+ else sfx("click");
+});
+$("musicBtn").addEventListener("click",()=>{
+ if(musicOn)stopMusic();
+ else{
+  if(!soundOn){
+   soundOn=true;
+   $("soundBtn").textContent="🔊 Sound ON";
+  }
+  startMusic();
+ }
+});
+</script>
+</body>
+</html>
